@@ -1,0 +1,80 @@
+<html>
+<head>
+   <title>Daisy Disk node-webkit - fork from size checker - authored by sivagao</title>
+   <link href='http://fonts.googleapis.com/css?family=Exo+2' rel='stylesheet' type='text/css'>
+   <link href="css/style.css" rel="stylesheet">
+  <script src="js/jquery.min.js"></script>
+  <script src="js/lzadialog.js"></script>
+  <script src="js/d3.v3.min.js"></script>
+  <script src="js/app.js"></script>
+</head>
+<body>
+
+<!-- landpage - select input field here -->
+<div class="selectFolder">
+  <button id="selectButton" class="myButton" onclick="getDir();">Select a directory or drag&drop here</button>
+</div>
+
+<!-- loading indicator -->
+<div class="spinner">
+  <div class="rect1"></div>
+  <div class="rect2"></div>
+  <div class="rect3"></div>
+  <div class="rect4"></div>
+  <div class="rect5"></div>
+</div>
+
+<!-- visualization by filetype or directory -->
+<ul class="tabs">
+    <li>
+        <input type="radio"  name="tabs" id="tab1">
+        <label for="tab1">By Type</label>
+        <div id="tab-content1" class="tab-content animated fadeIn">
+            <svg id="chart2">
+
+            </svg>
+            <div id="tooltip" class="hidden">
+                <span id="chart2Per1">A</span> <br>
+                <span id="chart2Per2">100</span>
+            </div>
+
+        </div>
+    </li>
+    <li>
+        <input type="radio" checked name="tabs" id="tab2">
+        <label for="tab2">Overall</label>
+        <div id="tab-content2" class="tab-content animated fadeIn">
+            <div id="chart1">
+                <div id="explanation" >
+                    <span id="percentage"></span><br/>
+                    <span id="percentageDetail"></span>
+                </div>
+            </div>
+            <div id="detailInfo"></div>
+        </div>
+    </li>
+</ul>
+
+
+<script>
+    $( document ).ready(function() {
+        $(".tabs").hide();
+    });
+
+    function getDir(){
+      LZADialog.selectDir(function(file){
+              console.log('complete callback: '+ file.path);
+              var filePath =  file.path;
+              scan(filePath);
+          }
+      );
+    }
+
+    // show devtool icon
+    require('nw.gui').Window.get().showDevTools();
+</script>
+<script src="js/rightclick.js"></script>
+<script src="js/rendering.js"></script>
+
+</body>
+</html>
