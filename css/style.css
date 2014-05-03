@@ -11,6 +11,17 @@ html, body {
     background-color: #bdc3c7;
 }
 
+/* quick fix */
+#tab-content2 .sun-busrt{
+    float: left;
+    margin-left: 15px;
+}
+#tab-content2 .info-table{
+    float: left;
+    width: 400px;
+    margin: 20px auto;
+}
+
 .selectFolder {
 
     width:100%;
@@ -210,8 +221,8 @@ rect {
 
 #explanation {
   position: absolute;
-  top: 260px;
-  left: 305px;
+  top: 240px;
+  left: 205px;
   width: 180px;
   text-align: center;
   color: #666;
