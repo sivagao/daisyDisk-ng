@@ -1,4 +1,5 @@
 var filewalker = require('filewalker');
+
 function bytesToSize(bytes) {
     var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
     if (bytes == 0) return 'n/a';
@@ -8,7 +9,7 @@ function bytesToSize(bytes) {
 };
 
 var result = {};
-var details = [];  //save as json file
+var details = []; //save as json file
 function scan(inputPath) {
     /* reset result */
     result = {};
@@ -23,15 +24,21 @@ function scan(inputPath) {
     document.title = 'size checker';
     $(".selectFolder").css("display", "none");
     $(".spinner").css("display", "block");
-    var root = {"name": "root", "children": []};
+    var root = {
+        "name": "root",
+        "children": []
+    };
 
-    filewalker(inputPath,options)
+    filewalker(inputPath, options)
         .on('dir', function(p) {
             //console.log('dir:  %s', p);
         })
         .on('file', function(p, s) {
             //console.log('file: %s, %d bytes and %s', p, s.size, bytesToSize(s.size));
-            details.push({"name":p,"size":bytesToSize(s.size)});
+            details.push({
+                "name": p,
+                "size": bytesToSize(s.size)
+            });
             var sequence = p;
             var size = +s.size;
             var parts = sequence.split("/");
@@ -54,7 +61,11 @@ function scan(inputPath) {
                     //var type = (nodeName.indexOf('.') > 0)?nodeName.split('.').pop():"dir";
 
                     if (!foundChild) {
-                        childNode = {"name": nodeName, "type": "dir", "children": []};
+                        childNode = {
+                            "name": nodeName,
+                            "type": "dir",
+                            "children": []
+                        };
                         children.push(childNode);
                     }
                     currentNode = childNode;
@@ -64,12 +75,15 @@ function scan(inputPath) {
                     if (filetype.length < 7) {
                         if (filetype in result) {
                             result[filetype] += size;
-                        }
-                        else {
+                        } else {
                             result[filetype] = size;
                         }
                     }
-                    childNode = {"name": nodeName, "type": filetype, "size": size};
+                    childNode = {
+                        "name": nodeName,
+                        "type": filetype,
+                        "size": size
+                    };
                     children.push(childNode);
                 }
             }
@@ -79,7 +93,7 @@ function scan(inputPath) {
         })
         .on('done', function() {
             console.log('%d dirs, %d files, %d bytes and %s', this.dirs, this.files, this.bytes, bytesToSize(this.bytes));
-            var newTitle = this.dirs + ' dirs, '+ this.files + ' files, total size of ' + bytesToSize(this.bytes);
+            var newTitle = this.dirs + ' dirs, ' + this.files + ' files, total size of ' + bytesToSize(this.bytes);
             document.title = newTitle;
             var totalSize = this.bytes;
             var index = 1;
@@ -96,16 +110,20 @@ function scan(inputPath) {
 
             createChart1(root);
             var filetypeJSON = [];
-            for (var x in result){
-                var tempF = result[x]/totalSize;
-                if (tempF < 0.001){continue;}
-                var tempN = bytesToSize(result[x])+'/'+bytesToSize(totalSize);
-                var temp = {filetype:x, "usage":tempF, "detail":tempN};
+            for (var x in result) {
+                var tempF = result[x] / totalSize;
+                if (tempF < 0.001) {
+                    continue;
+                }
+                var tempN = bytesToSize(result[x]) + '/' + bytesToSize(totalSize);
+                var temp = {
+                    filetype: x,
+                    "usage": tempF,
+                    "detail": tempN
+                };
                 filetypeJSON.push(temp);
             }
             createChart2(filetypeJSON);
         })
         .walk();
 }
-
-

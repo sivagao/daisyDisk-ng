@@ -15,8 +15,6 @@ var info_item = new gui.MenuItem({
     label: 'Project Page'
 });
 menu2.append(info_item);
-var bodyElems = document.getElementsByTagName("body");
-var body = bodyElems[0];
 
 function reSelect() {
     location.reload();
@@ -58,8 +56,10 @@ menu2.items[0].click = reSelect;
 menu2.items[1].click = exportReport;
 menu2.items[3].click = projectPage;
 
-body.addEventListener('contextmenu', function(ev) {
-    ev.preventDefault();
-    menu2.popup(ev.x, ev.y);
-    return false;
+$(function() {
+    $('body').on('contextmenu', function(ev) {
+        ev.preventDefault();
+        menu2.popup(ev.x, ev.y);
+        return false;
+    })
 });
